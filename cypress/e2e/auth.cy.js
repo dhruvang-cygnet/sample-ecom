@@ -1,7 +1,7 @@
 describe('Logout Flow', () => {
   beforeEach(() => {
     cy.loginAndVisit('/');
-    cy.get('.header__user').trigger('mouseover');
+    cy.get('.header__user-btn').click();
     cy.get('.header__dropdown-item--logout').click();
   });
 

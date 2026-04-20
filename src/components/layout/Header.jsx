@@ -9,6 +9,7 @@ export default function Header() {
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -54,12 +55,12 @@ export default function Header() {
             {itemCount > 0 && <span className="header__cart-badge">{itemCount}</span>}
           </Link>
           <div className="header__user">
-            <button className="header__user-btn">
+            <button className="header__user-btn" onClick={() => setDropdownOpen(o => !o)}>
               <span className="header__avatar">{user?.avatar}</span>
               <span className="header__user-name">{user?.name?.split(' ')[0]}</span>
               <span>▾</span>
             </button>
-            <div className="header__dropdown">
+            <div className={`header__dropdown${dropdownOpen ? ' header__dropdown--open' : ''}`}>
               <span className="header__dropdown-email">{user?.email}</span>
               <Link to="/orders" className="header__dropdown-item">My Orders</Link>
               <button className="header__dropdown-item header__dropdown-item--logout" onClick={handleLogout}>

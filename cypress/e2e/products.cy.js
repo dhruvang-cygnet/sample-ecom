@@ -23,18 +23,18 @@ describe('Product Listing Page', () => {
 
   it('sort by price low to high orders cards correctly', () => {
     cy.get('.listing-page__controls .form-select').select('price-asc');
-    cy.get('.product-card').should('have.length.at.least', 1);
-    cy.get('.product-card__price').then($els => {
-      const prices = [...$els].map(el => parseFloat(el.textContent.replace('$', '')));
+    cy.url().should('include', 'sort=price-asc');
+    cy.get('.product-card__price').should($els => {
+      const prices = [...$els].map(el => parseFloat(el.text().replace('$', '')));
       expect(prices[0]).to.be.at.most(prices[prices.length - 1]);
     });
   });
 
   it('sort by price high to low orders cards correctly', () => {
     cy.get('.listing-page__controls .form-select').select('price-desc');
-    cy.get('.product-card').should('have.length.at.least', 1);
-    cy.get('.product-card__price').then($els => {
-      const prices = [...$els].map(el => parseFloat(el.textContent.replace('$', '')));
+    cy.url().should('include', 'sort=price-desc');
+    cy.get('.product-card__price').should($els => {
+      const prices = [...$els].map(el => parseFloat(el.text().replace('$', '')));
       expect(prices[0]).to.be.at.least(prices[prices.length - 1]);
     });
   });
@@ -79,6 +79,10 @@ describe('Product Listing Page', () => {
     cy.get('.price-filter input').first().clear().type('100');
     cy.get('.price-filter input').last().clear().type('200');
     cy.get('.price-filter button[type=submit]').click();
+    // Wait for URL params so we know the filter fired before checking results
+    cy.url().should('include', 'minPrice=100').and('include', 'maxPrice=200');
+    // Only $149.99 sits in the $100–$200 band across the 25 mock products
+    cy.get('.product-card').should('have.length', 1);
     cy.get('.product-card__price').each($el => {
       const price = parseFloat($el.text().replace('$', ''));
       expect(price).to.be.within(100, 200);
@@ -130,8 +134,9 @@ describe('Category Page', () => {
     cy.loginAndVisit('/category/electronics');
     cy.get('.product-card').should('have.length', 5);
     cy.get('.category-page__toolbar .form-select').select('price-asc');
-    cy.get('.product-card__price').then($els => {
-      const prices = [...$els].map(el => parseFloat(el.textContent.replace('$', '')));
+    // CategoryPage uses component state (no URL), so .should() retry waits for re-render
+    cy.get('.product-card__price').should($els => {
+      const prices = [...$els].map(el => parseFloat(el.text().replace('$', '')));
       expect(prices[0]).to.be.at.most(prices[prices.length - 1]);
     });
   });
