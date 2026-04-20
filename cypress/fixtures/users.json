@@ -1,0 +1,5 @@
+[
+  { "id": 1, "name": "Alice Johnson", "email": "alice@example.com", "status": "active", "joined": "2024-01-01" },
+  { "id": 2, "name": "Bob Smith",    "email": "bob@example.com",   "status": "inactive","joined": "2024-02-01" },
+  { "id": 3, "name": "Carol White",  "email": "carol@example.com", "status": "pending", "joined": "2024-03-01" }
+]
