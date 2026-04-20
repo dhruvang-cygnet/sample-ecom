@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer, useCallback } from 'react';
+import { createContext, useContext, useReducer, useCallback, useEffect } from 'react';
 
 const CartContext = createContext(null);
 
@@ -28,8 +28,16 @@ function cartReducer(state, action) {
   }
 }
 
+function loadCart() {
+  try { return JSON.parse(localStorage.getItem('cart')) ?? []; } catch { return []; }
+}
+
 export function CartProvider({ children }) {
-  const [items, dispatch] = useReducer(cartReducer, []);
+  const [items, dispatch] = useReducer(cartReducer, null, loadCart);
+
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(items));
+  }, [items]);
 
   const addToCart = useCallback((product, quantity = 1) => {
     dispatch({ type: 'ADD', product, quantity });
