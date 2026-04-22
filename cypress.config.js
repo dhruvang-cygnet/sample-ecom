@@ -15,6 +15,7 @@ export default defineConfig({
     video: false,
     screenshotOnRunFailure: true,
     experimentalMemoryManagement: true,
+    blockHosts: ['picsum.photos'],
   },
   component: {
     devServer: {

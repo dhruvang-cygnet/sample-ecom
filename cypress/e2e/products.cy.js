@@ -25,7 +25,7 @@ describe('Product Listing Page', () => {
     cy.get('.listing-page__controls .form-select').select('price-asc');
     cy.url().should('include', 'sort=price-asc');
     cy.get('.product-card__price').should($els => {
-      const prices = [...$els].map(el => parseFloat(el.text().replace('$', '')));
+      const prices = [...$els].map(el => parseFloat(el.textContent.replace('$', '')));
       expect(prices[0]).to.be.at.most(prices[prices.length - 1]);
     });
   });
@@ -34,7 +34,7 @@ describe('Product Listing Page', () => {
     cy.get('.listing-page__controls .form-select').select('price-desc');
     cy.url().should('include', 'sort=price-desc');
     cy.get('.product-card__price').should($els => {
-      const prices = [...$els].map(el => parseFloat(el.text().replace('$', '')));
+      const prices = [...$els].map(el => parseFloat(el.textContent.replace('$', '')));
       expect(prices[0]).to.be.at.least(prices[prices.length - 1]);
     });
   });
@@ -136,7 +136,7 @@ describe('Category Page', () => {
     cy.get('.category-page__toolbar .form-select').select('price-asc');
     // CategoryPage uses component state (no URL), so .should() retry waits for re-render
     cy.get('.product-card__price').should($els => {
-      const prices = [...$els].map(el => parseFloat(el.text().replace('$', '')));
+      const prices = [...$els].map(el => parseFloat(el.textContent.replace('$', '')));
       expect(prices[0]).to.be.at.most(prices[prices.length - 1]);
     });
   });

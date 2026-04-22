@@ -54,8 +54,11 @@ export default function ProductListingPage() {
 
   const applyPriceFilter = (e) => {
     e.preventDefault();
-    updateParam('minPrice', priceRange.min);
-    updateParam('maxPrice', priceRange.max);
+    setSearchParams(prev => {
+      if (priceRange.min) prev.set('minPrice', priceRange.min); else prev.delete('minPrice');
+      if (priceRange.max) prev.set('maxPrice', priceRange.max); else prev.delete('maxPrice');
+      return prev;
+    });
   };
 
   const clearFilters = () => {
